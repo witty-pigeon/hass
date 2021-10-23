@@ -371,10 +371,15 @@ SUCCESS-CALLBACK is a function to be called with a successful request response."
 
 
 ;;;###autoload
-(defun hass-setup ()
+(cl-defun hass-setup (&key host insecure port apikey watch)
   "Run before using any hass features.
 Check whether necessary variables are set and then query the Home
 Assistant instance for available services and entities."
+  (when host     (setq hass-host host))
+  (when port     (setq hass-port port))
+  (when insecure (setq hass-insecure insecure))
+  (when apikey   (setq hass-apikey apikey))
+  (when watch    (setq hass-watched-entities watch))
   (cond ((not (equal (type-of (hass--apikey)) 'string))
          (user-error "HASS-APIKEY must be set to use hass"))
         ((not (equal (type-of hass-host) 'string))
